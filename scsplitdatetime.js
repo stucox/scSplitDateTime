@@ -26,6 +26,7 @@ var scSplitDateTime = (function() {
 		return [date, time];
 	}
 
+	// Wrap an element with a new node with the given tag name
 	function wrap(el_, nodeName) {
 		var wrapper_ = document.createElement(nodeName);
 		el_.parentNode.insertBefore(wrapper_, el_);
@@ -47,6 +48,7 @@ var scSplitDateTime = (function() {
 		}
 	}
 
+	// Main function to split a datetime field
 	function init(datetime_) {
 		// Process:
 		// - Wrap with a <span> to keep it all together
