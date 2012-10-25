@@ -1,0 +1,2 @@
+scsplitdatetime
+===============
