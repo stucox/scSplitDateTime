@@ -5,7 +5,7 @@
 <script src="https://raw.github.com/brandonaaron/livequery/master/jquery.livequery.js"></script>
 <script src="modernizr.custom.44992.js"></script>
 <script src="js-webshim/minified/polyfiller.js"></script>
-<script src="jquery.scsplitdatetime-0.1.0.js"></script>
+<script src="scsplitdatetime.js"></script>
 </head>
 <body>
 	<form>
@@ -19,7 +19,7 @@
 	$.webshims.polyfill('forms forms-ext');
 	// Apply to all datetime inputs, now and in the future
 	$('input[type=datetime]').livequery(function() {
-		$(this).scSplitDateTime();
+		scSplitDateTime(this);
 	});
 </script>
 </body>

@@ -2,7 +2,7 @@
 
 **Current version: 0.1.0**
 
-A handy little [jQuery](http://jquery.com) plugin to split an `<input>` element representing a datetime value into separate HTML5-compliant date and time input elements. The form still submits a single field with a combined datetime value.
+A handy little tool to split an `<input>` element representing a datetime value into separate HTML5-compliant date and time input elements. The form still submits a single field with a combined datetime value.
 
 ## Why?
 
@@ -25,13 +25,12 @@ So, splitting a datetime input allows you to:
         <input type="submit" value="Go!">
     </form>
 
-    <!-- Include jQuery -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <!-- Include the plugin -->
-    <script src="jquery.scsplitdatetime.min.js"></script>
+    <script src="scsplitdatetime.min.js"></script>
     <script>
         // Apply the plugin to one or more input elements
-        $('#event_start').scSplitDateTime();
+        var datetimeElement = document.getElementById('event_start');
+        scSplitDateTime(datetimeElement);
     </script>
 
 ### Polyfilling
@@ -46,7 +45,7 @@ A common use is to use this with *all* datetime inputs, if the browser hasn't im
         // Apply plugin to all elements with type="datetime", using livequery
         // so that elements added dynamically in the future are patched too
         $('input[type=datetime]').livequery(function(){
-            $(this).scSplitDateTime();
+            scSplitDateTime(this);
         });
     }
     </script>
@@ -64,7 +63,7 @@ This works really well with Alexander Farkas' [webshims](http://afarkas.github.c
         // Apply plugin to all elements with type="datetime", using livequery
         // so that elements added dynamically in the future are patched too
         $('input[type=datetime]').livequery(function(){
-            $(this).scSplitDateTime();
+            scSplitDateTime(this);
         });
     }
     </script>
