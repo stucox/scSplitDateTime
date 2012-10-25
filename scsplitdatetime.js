@@ -20,8 +20,6 @@ var scSplitDateTime = (function() {
 		// If we can't parse the datetime, leave blank
 		if(dt == 'Invalid Date') {
 			return ['', ''];
-			//var today = new Date();
-			//dt = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 		}
 		var date = pad(dt.getFullYear()) + '-' + pad(dt.getMonth() + 1) + '-' + pad(dt.getDate()),
 			time = pad(dt.getHours()) + ':' + pad(dt.getMinutes());
