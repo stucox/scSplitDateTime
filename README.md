@@ -68,7 +68,7 @@ This works really well with Alexander Farkas' [webshims](http://afarkas.github.c
 
 ### Additional notes
 
-* It isn't restricted to input elements with `type="datetime"` - it'll still work with `type=text`, or in fact any other `<input>` element... but probably wouldn't make much sense with most
+* It isn't restricted to input elements with `type="datetime"` - it'll still work with `type="text"`, or in fact any other `<input>` element... but probably wouldn't make much sense with most
 * The plugin also handles `min` and `max` attributes on the datetime input 'intelligently' (could probably be more intelligent):
     - The date part of the `min` and `max` datetime values are copied to the date input
     - The time part of the `min` and `max` datetime values are copied to the time input, *if and only if* the min and max dates are the same
