@@ -3,9 +3,11 @@
 // Currently only supports yyyy-mm-dd and HH:MM formats
 // Variable names ending in _ are DOM elements
 // TODO: add custom formatting
-// TODO: manage associated datalists - need to split datetime values for each option
+// TODO: manage associated datalists - need to split datetime values for each
+//  option
 // TODO: support for datetime-local
-// TODO: Add validation to final datetime value, because no validation provided by time field
+// TODO: Add validation to final datetime value, because no validation provided
+//  by time field
 // TODO: Consider dynamic validation for time value, based on selected date?
 var scSplitDateTime = (function() {
 
@@ -14,14 +16,16 @@ var scSplitDateTime = (function() {
 		return parseInt(n, 10) < 10 ? '0' + n : n.toString();
 	}
 
-	// Function to take a datetime string and return separate date and time strings as a [date, time] array
+	// Function to take a datetime string and return separate date and time
+	// strings as a [date, time] array
 	function splitDateString(dateString) {
 		var dt = new Date(dateString);
 		// If we can't parse the datetime, leave blank
 		if(dt == 'Invalid Date') {
 			return ['', ''];
 		}
-		var date = pad(dt.getFullYear()) + '-' + pad(dt.getMonth() + 1) + '-' + pad(dt.getDate()),
+		var date = pad(dt.getFullYear()) + '-' + pad(dt.getMonth() + 1) + '-' +
+				pad(dt.getDate()),
 			time = pad(dt.getHours()) + ':' + pad(dt.getMinutes());
 		return [date, time];
 	}
@@ -37,13 +41,15 @@ var scSplitDateTime = (function() {
 	// Updates the value of a datetime field from date and time fields
 	function update(datetime_, date_, time_) {
 		var date = new Date(date_.value),
-			// Date constructor cannot handle a time alone, so give it an arbitrary date
+			// Date constructor cannot handle a time alone, so give it an
+			//  arbitrary date
 			time = new Date('1970-01-01T' + time_.value);
 		if(date == 'Invalid Date' || time == 'Invalid Date') {
 			datetime_.removeAttribute('value');
 		}
 		else {
-			datetime_.value = pad(date.getFullYear()) + '-' + pad(date.getMonth()+1) + '-' + pad(date.getDate()) +
+			datetime_.value = pad(date.getFullYear()) + '-' +
+					pad(date.getMonth()+1) + '-' + pad(date.getDate()) +
 					' ' + pad(time.getHours()) + ':' + pad(time.getMinutes());
 		}
 	}
@@ -66,11 +72,12 @@ var scSplitDateTime = (function() {
 		date_.id = '';
 		time_.id = '';
 
-		// Hiding the datetime field with type=hidden instead of CSS because it makes semantic sense: this
-		// shouldn't be edited by the user
+		// Hiding the datetime field with type=hidden instead of CSS because it
+		// makes semantic sense: this shouldn't be edited by the user
 		datetime_.type = 'hidden';
 
-		// `value`, `min` and `max` attributes are datetime strings which need careful handling for date and time:
+		// `value`, `min` and `max` attributes are datetime strings which need
+		// careful handling for date and time:
 		// - new date element should copy the date portion of each of these
 		// - new time element should copy the time portion for its value
 		// - time element shouldn't validate min/max as these depend on the date
@@ -83,8 +90,8 @@ var scSplitDateTime = (function() {
 		time_.setAttribute('value', valueDateAndTime[1]);
 		time_.removeAttribute('min');
 		time_.removeAttribute('max');
-		// Remove `name` properties so that the new fields aren't submitted; we'll keep the hidden datetime field
-		// in sync
+		// Remove `name` properties so that the new fields aren't submitted;
+		// we'll keep the hidden datetime field in sync
 		date_.removeAttribute('name');
 		time_.removeAttribute('name');
 		// Event handlers to keep the hidden datetime field in sync
