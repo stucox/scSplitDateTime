@@ -1,7 +1,5 @@
 # scSplitDateTime
 
-**Current version: 0.1.0**
-
 A handy little tool to split an `<input>` element representing a datetime value into separate HTML5-compliant date and time input elements. The form still submits a single field with a combined datetime value.
 
 ## Why?
