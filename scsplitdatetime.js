@@ -61,6 +61,13 @@ var scSplitDateTime = (function() {
 		var parent = document.createElement('span');
 		parent.innerHTML = '<input type="' + oType + '">';
 		var newObject = parent.childNodes[0];
+		for(var prop in oldObject) {
+			if(oldObject[prop] && prop != 'type') {
+				try {
+					newObject[prop] = oldObject[prop];
+				} catch(e) {}
+			}
+		}
 		/*try {
 			newObject.type = oType;
 		}
