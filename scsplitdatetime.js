@@ -60,7 +60,7 @@ var scSplitDateTime = (function() {
 	// http://www.universalwebservices.net/web-programming-resources/
 	//		javascript/change-input-element-type-using-javascript
 	function changeInputType(oldObject, oType) {
-		var new Object = document.createElement('input');
+		var newObject = document.createElement('input');
 		newObject.type = oType;
 		if(oldObject.size) newObject.size = oldObject.size;
 		if(oldObject.value) newObject.value = oldObject.value;
