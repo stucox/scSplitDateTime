@@ -66,9 +66,7 @@ var scSplitDateTime = (function() {
 
 		container_.className = 'scsplitdatetime';
 		date_.type = 'date';
-		date_.placeholder = 'yyyy-mm-dd';
 		time_.type ='time';
-		time_.placeholder = 'HH:MM';
 
 		// Avoid duplicate IDs
 		date_.id = '';
