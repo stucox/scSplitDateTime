@@ -61,7 +61,7 @@ var scSplitDateTime = (function() {
 	//		javascript/change-input-element-type-using-javascript
 	function changeInputType(oldObject, oType) {
 		var newObject = document.createElement('input');
-		newObject.type = 'file';
+		newObject.type = oType;
 		if(oldObject.size) newObject.size = oldObject.size;
 		if(oldObject.value) newObject.value = oldObject.value;
 		if(oldObject.name) newObject.name = oldObject.name;
