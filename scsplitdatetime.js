@@ -80,8 +80,8 @@ var scSplitDateTime = (function() {
 			time_ = datetime_.cloneNode(false);
 
 		container_.className = 'scsplitdatetime';
-		date_.type = 'date';
-		time_.type = 'time';
+		date_ = changeInputType(date_, 'date');
+		time_ = changeInputType(time_, 'time');
 
 		// Avoid duplicate IDs
 		date_.id = '';
