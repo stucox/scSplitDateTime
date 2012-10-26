@@ -57,16 +57,16 @@ var scSplitDateTime = (function() {
 	}
 
 	// IE-friendly method for changing input type, lovingly stolen from:
-	// http://www.universalwebservices.net/web-programming-resources/
-	//		javascript/change-input-element-type-using-javascript
 	function changeInputType(oldObject, oType) {
-		var newObject = document.createElement('input');
-		newObject.type = oType;
-		if(oldObject.size) newObject.size = oldObject.size;
-		if(oldObject.value) newObject.value = oldObject.value;
-		if(oldObject.name) newObject.name = oldObject.name;
-		if(oldObject.id) newObject.id = oldObject.id;
-		if(oldObject.className) newObject.className = oldObject.className;
+		var parent = document.createElement('span');
+		parent.innerHTML = '<input type="' + oType + '">';
+		var newObject = parent.childNodes[0];
+		/*try {
+			newObject.type = oType;
+		}
+		catch(e) {
+			newObject.type = 'text';
+		}*/
 		if(oldObject.parentNode) {
 			oldObject.parentNode.replaceChild(newObject,oldObject);
 		}
