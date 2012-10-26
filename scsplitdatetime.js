@@ -67,7 +67,10 @@ var scSplitDateTime = (function() {
 		if(oldObject.name) newObject.name = oldObject.name;
 		if(oldObject.id) newObject.id = oldObject.id;
 		if(oldObject.className) newObject.className = oldObject.className;
-		oldObject.parentNode.replaceChild(newObject,oldObject);
+		if(oldObject.parentNode) {
+			oldObject.parentNode.replaceChild(newObject,oldObject);
+		}
+		delete oldObject;
 		return newObject;
 	}
 
