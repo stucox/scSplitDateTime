@@ -45,7 +45,7 @@ var scSplitDateTime = (function() {
 			//  arbitrary date
 			time = new Date('1970-01-01T' + time_.value);
 		if(date == 'Invalid Date' || time == 'Invalid Date') {
-			datetime_.removeAttribute('value');
+			datetime_.value = "";
 		}
 		else {
 			datetime_.value = pad(date.getFullYear()) + '-' +
@@ -65,8 +65,10 @@ var scSplitDateTime = (function() {
 			time_ = datetime_.cloneNode(true);
 
 		container_.className = 'scsplitdatetime';
-		date_.setAttribute('type', 'date');
-		time_.setAttribute('type', 'time');
+		date_.type = 'date';
+		date_.placeholder = 'yyyy-mm-dd';
+		time_.type ='time';
+		time_.placeholder = 'HH:MM';
 
 		// Avoid duplicate IDs
 		date_.id = '';
@@ -81,30 +83,34 @@ var scSplitDateTime = (function() {
 		// - new date element should copy the date portion of each of these
 		// - new time element should copy the time portion for its value
 		// - time element shouldn't validate min/max as these depend on the date
-		var valueDateAndTime = splitDateString(datetime_.getAttribute('value'));
-		var minDateAndTime = splitDateString(datetime_.getAttribute('min'));
-		var maxDateAndTime = splitDateString(datetime_.getAttribute('max'));
-		date_.setAttribute('value', valueDateAndTime[0]);
-		date_.setAttribute('min', minDateAndTime[0]);
-		date_.setAttribute('max', maxDateAndTime[0]);
-		time_.setAttribute('value', valueDateAndTime[1]);
-		time_.removeAttribute('min');
-		time_.removeAttribute('max');
+		var valueDateAndTime = splitDateString(datetime_.value);
+		var minDateAndTime = splitDateString(datetime_.min);
+		var maxDateAndTime = splitDateString(datetime_.max);
+		date_.value = valueDateAndTime[0];
+		date_.min = minDateAndTime[0];
+		date_.max = maxDateAndTime[0];
+		time_.value = valueDateAndTime[1];
+		time_.min = "";
+		time_.max = "";
+
 		// Remove `name` properties so that the new fields aren't submitted;
 		// we'll keep the hidden datetime field in sync
-		date_.removeAttribute('name');
-		time_.removeAttribute('name');
+		date_.name = "";
+		time_.name = "";
+
 		// Event handlers to keep the hidden datetime field in sync
 		var events = ['change', 'blur'],
 			updateHandler = function() {
 				update(datetime_, date_, time_);
 			};
 		for(var i in events) {
-			if(container_.addEventListener) {
-				container_.addEventListener(events[i], updateHandler, false);
+			if(document.addEventListener) {
+				date_.addEventListener(events[i], updateHandler, false);
+				time_.addEventListener(events[i], updateHandler, false);
 			}
 			else {
-				container_.attachEvent(events[i], updateHandler);
+				date_.attachEvent(events[i], updateHandler);
+				time_.attachEvent(events[i], updateHandler);
 			}
 		}
 		container_.appendChild(date_);
