@@ -52,6 +52,21 @@ var scSplitDateTime = (function() {
 					pad(date.getMonth()+1) + '-' + pad(date.getDate()) +
 					' ' + pad(time.getHours()) + ':' + pad(time.getMinutes());
 		}
+		// Update attribute
+		datetime_.setAttribute('value', datetime_.value);
+	}
+
+	// IE-friendly method for changing input type, lovingly stolen from:
+	// http://www.universalwebservices.net/web-programming-resources/
+	//		javascript/change-input-element-type-using-javascript
+	function changeInputType(oldObject, oType) {
+		var newObject = oldObject.cloneNode(false);
+		newObject.type = oType;
+		if(oldObject.parentNode) {
+			oldObject.parentNode.replaceChild(newObject, oldObject);
+		}
+		delete oldObject;
+		return newObject;
 	}
 
 	// Main function to split a datetime field
@@ -61,12 +76,12 @@ var scSplitDateTime = (function() {
 		// - Add a new date and time fields to replace the datetime field
 		// - Hide the datetime, so that it still submits correctly
 		var container_ = wrap(datetime_, 'span'),
-			date_ = datetime_.cloneNode(true),
-			time_ = datetime_.cloneNode(true);
+			date_ = datetime_.cloneNode(false),
+			time_ = datetime_.cloneNode(false);
 
 		container_.className = 'scsplitdatetime';
-		date_.setAttribute('type', 'date');
-		time_.setAttribute('type', 'time');
+		date_.type = 'date';
+		time_.type = 'time';
 
 		// Avoid duplicate IDs
 		date_.id = '';
@@ -74,7 +89,7 @@ var scSplitDateTime = (function() {
 
 		// Hiding the datetime field with type=hidden instead of CSS because it
 		// makes semantic sense: this shouldn't be edited by the user
-		datetime_.setAttribute('type', 'hidden');
+		datetime_ = changeInputType(datetime_, 'hidden');
 
 		// `value`, `min` and `max` attributes are datetime strings which need
 		// careful handling for date and time:
