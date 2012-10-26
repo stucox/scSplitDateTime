@@ -65,8 +65,8 @@ var scSplitDateTime = (function() {
 			time_ = datetime_.cloneNode(true);
 
 		container_.className = 'scsplitdatetime';
-		date_.type = 'date';
-		time_.type ='time';
+		date_.setAttribute('type', 'date');
+		time_.setAttribute('type', 'time');
 
 		// Avoid duplicate IDs
 		date_.id = '';
@@ -74,7 +74,7 @@ var scSplitDateTime = (function() {
 
 		// Hiding the datetime field with type=hidden instead of CSS because it
 		// makes semantic sense: this shouldn't be edited by the user
-		datetime_.type = 'hidden';
+		datetime_.setAttribute('type', 'hidden');
 
 		// `value`, `min` and `max` attributes are datetime strings which need
 		// careful handling for date and time:
