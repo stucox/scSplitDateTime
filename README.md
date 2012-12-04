@@ -66,6 +66,14 @@ This works really well with Alexander Farkas' [webshims](http://afarkas.github.c
     }
     </script>
 
+### Alternative input types
+
+You may wish to use `type` attributes other than "date" and "time" for the separated `<input>` elements. This can be done by passing in the type you'd like to use for the date and time elements respectively, e.g.:
+
+    scSplitDateTime(element, 'text', 'text');
+
+replaces `element` with two `<input type="text">` elements. The source input element is still expected to contain a datetime value and will still be split into separate date and time values and recombined on form submit.
+
 ### Additional notes
 
 * It isn't restricted to input elements with `type="datetime"` - it'll still work with `type="text"`, or in fact any other `<input>` element... but probably wouldn't make much sense with most

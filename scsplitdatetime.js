@@ -74,14 +74,21 @@ var scSplitDateTime = (function() {
 			}
 		}
 		if(oldObject.parentNode) {
-			oldObject.parentNode.replaceChild(newObject,oldObject);
+			oldObject.parentNode.replaceChild(newObject, oldObject);
 		}
-		delete oldObject;
 		return newObject;
 	}
 
 	// Main function to split a datetime field
-	function init(datetime_) {
+	// Params:
+	// - `datetime_`: DOM element to split
+	// - `dateType`: type attribute to use for resulting `date` input element
+	//               (string; default: "date")
+	// - `timeType`: type attribute to use for resulting `time` input element
+	//               (string; default: "time")
+	function init(datetime_, dateType, timeType) {
+		dateType = typeof dateType !== 'undefined' ? dateType : 'date';
+		timeType = typeof timeType !== 'undefined' ? timeType : 'time';
 		// Process:
 		// - Wrap with a <span> to keep it all together
 		// - Add a new date and time fields to replace the datetime field
@@ -91,8 +98,8 @@ var scSplitDateTime = (function() {
 			time_ = datetime_.cloneNode(false);
 
 		container_.className = 'scsplitdatetime';
-		date_ = changeInputType(date_, 'date');
-		time_ = changeInputType(time_, 'time');
+		date_ = changeInputType(date_, dateType);
+		time_ = changeInputType(time_, timeType);
 
 		// Avoid duplicate IDs
 		date_.id = '';
