@@ -4,11 +4,11 @@ A handy little tool to split an `<input>` element representing a datetime value 
 
 ## Why?
 
-At time of writing, Opera is the only browser which has implemented the HTML5 datetime input type. Google Chrome has implemented the date input type but not the time input type, while Safari, Firefox and IE have implemented neither. Also, many JavaScript libraries provide date input widgets and time input widgets, but there are few combined datetime widgets (and those that do exist are a bit rubbish).
+At time of writing, Opera is the only browser which has implemented the HTML5 datetime input type. Google Chrome has implemented the date and time input types separately, while Safari, Firefox and IE have implemented none of these. Also, many JavaScript libraries provide date input widgets and time input widgets, but there are few combined datetime widgets (and those that do exist are a bit rubbish).
 
 So, splitting a datetime input allows you to:
 
-* Use Google Chrome's native date input, while using a plugin to add a time widget
+* Use Google Chrome's native date and time widgets
 * Use your favourite date and time widget plugins together as one
 * Use HTML5 standards, even when support is partial
 * Separate your server-side logic from browser limitations (as far as the server's concerned, it's just a datetime field)
@@ -17,60 +17,68 @@ So, splitting a datetime input allows you to:
 
 ### Basic example
 
-    <!-- Define your form -->
-    <form action="submit/">
-        <input type="datetime" name="event_start" id="event_start">
-        <input type="submit" value="Go!">
-    </form>
+```html
+<!-- Define your form -->
+<form action="submit/">
+    <input type="datetime" name="event_start" id="event_start">
+    <input type="submit" value="Go!">
+</form>
 
-    <!-- Include the plugin -->
-    <script src="scsplitdatetime.min.js"></script>
-    <script>
-        // Apply the plugin to one or more input elements
-        var datetimeElement = document.getElementById('event_start');
-        scSplitDateTime(datetimeElement);
-    </script>
+<!-- Include the plugin -->
+<script src="scsplitdatetime.min.js"></script>
+<script>
+    // Apply the plugin to one or more input elements
+    var datetimeElement = document.getElementById('event_start');
+    scSplitDateTime(datetimeElement);
+</script>
+```
 
 ### Polyfilling
 
 A common use is to use this with *all* datetime inputs, if the browser hasn't implemented a UI. We can use [Modernizr](http://modernizr.com) and [livequery](http://docs.jquery.com/Plugins/livequery) to help with this:
 
-    <!-- Includes omitted -->
-    <script>
-    // Only polyfill if the browser hasn't implemented the datetime input type
-    if(!Modernizr.input.datetime) {
+```html
+<!-- Includes omitted -->
+<script>
+// Only polyfill if the browser hasn't implemented the datetime input type
+if(!Modernizr.input.datetime) {
 
-        // Apply plugin to all elements with type="datetime", using livequery
-        // so that elements added dynamically in the future are patched too
-        $('input[type=datetime]').livequery(function(){
-            scSplitDateTime(this);
-        });
-    }
-    </script>
+    // Apply plugin to all elements with type="datetime", using livequery
+    // so that elements added dynamically in the future are patched too
+    $('input[type=datetime]').livequery(function(){
+        scSplitDateTime(this);
+    });
+}
+</script>
+```
 
 This works really well with Alexander Farkas' [webshims](http://afarkas.github.com/webshim/demos/) library, which automatically applies date and time input widgets, while also correctly polyfilling the rest of the HTML5 input APIs (validation etc), but only if the browser needs it (it uses Modernizr too). So this is a fairly 'complete' solution:
 
-    <!-- Includes omitted -->
-    <script>
-    // Enable HTML5 form webshims
-    $.webshims.polyfill('forms forms-ext');
+```html
+<!-- Includes omitted -->
+<script>
+// Enable HTML5 form webshims
+$.webshims.polyfill('forms forms-ext');
 
-    // Only polyfill if the browser hasn't implemented the datetime input type
-    if(!Modernizr.input.datetime) {
+// Only polyfill if the browser hasn't implemented the datetime input type
+if(!Modernizr.input.datetime) {
 
-        // Apply plugin to all elements with type="datetime", using livequery
-        // so that elements added dynamically in the future are patched too
-        $('input[type=datetime]').livequery(function(){
-            scSplitDateTime(this);
-        });
-    }
-    </script>
+    // Apply plugin to all elements with type="datetime", using livequery
+    // so that elements added dynamically in the future are patched too
+    $('input[type=datetime]').livequery(function(){
+        scSplitDateTime(this);
+    });
+}
+</script>
+```
 
 ### Alternative input types
 
 You may wish to use `type` attributes other than "date" and "time" for the separated `<input>` elements. This can be done by passing in the type you'd like to use for the date and time elements respectively, e.g.:
 
-    scSplitDateTime(element, 'text', 'text');
+```javascript
+scSplitDateTime(element, 'text', 'text');
+```
 
 replaces `element` with two `<input type="text">` elements. The source input element is still expected to contain a datetime value and will still be split into separate date and time values and recombined on form submit.
 
