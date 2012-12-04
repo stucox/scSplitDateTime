@@ -56,11 +56,16 @@ var scSplitDateTime = (function() {
 		datetime_.setAttribute('value', datetime_.value);
 	}
 
-	// IE-friendly method for changing input type, lovingly stolen from:
+	// IE-friendly method for changing input type
 	function changeInputType(oldObject, oType) {
+		// Old IE won't let us assign HTML5 input types, so we need to create &
+		// replace, but using innerHTML() so it doesn't notice that we're using
+		// HTML5 types. Sneaky.
 		var parent = document.createElement('span');
 		parent.innerHTML = '<input type="' + oType + '">';
 		var newObject = parent.childNodes[0];
+		// Unfortunately this means we have to copy properties across the hard
+		// way
 		for(var prop in oldObject) {
 			if(oldObject[prop] && prop != 'type') {
 				try {
@@ -68,12 +73,6 @@ var scSplitDateTime = (function() {
 				} catch(e) {}
 			}
 		}
-		/*try {
-			newObject.type = oType;
-		}
-		catch(e) {
-			newObject.type = 'text';
-		}*/
 		if(oldObject.parentNode) {
 			oldObject.parentNode.replaceChild(newObject,oldObject);
 		}
