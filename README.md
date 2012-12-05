@@ -77,8 +77,11 @@ if(!Modernizr.input.datetime) {
 You can pass an options object in to the `scSplitDateTime()` function for additional configuration.
 
 **dateType:** defines the `type` attribute of the element created to store the date; default = "date"
+
 **timeType:** defines the `type` attribute of the element created to store the date; default = "time"
+
 **dateClassName:** the `class` applied to the element created to store the date; default = "scsplitdatetime-date"
+
 **timeClassName:** the `class` applied to the element created to store the time; default = "scsplitdatetime-time"
 
 Used like so:
