@@ -123,8 +123,8 @@ var scSplitDateTime = (function() {
 		time_ = changeInputType(time_, options.timeType);
 
 		// Avoid duplicate IDs
-		date_.removeProperty('id');
-		time_.removeProperty('id');
+		date_.id = null;
+		time_.id = null;
 
 		date_.className = options.dateClassName;
 		time_.className = options.timeClassName;
