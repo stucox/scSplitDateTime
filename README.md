@@ -72,15 +72,26 @@ if(!Modernizr.input.datetime) {
 </script>
 ```
 
-### Alternative input types
+### Options
 
-You may wish to use `type` attributes other than "date" and "time" for the separated `<input>` elements. This can be done by passing in the type you'd like to use for the date and time elements respectively, e.g.:
+You can pass an options object in to the `scSplitDateTime()` function for additional configuration.
+
+**dateType:** defines the `type` attribute of the element created to store the date; default = "date"
+**timeType:** defines the `type` attribute of the element created to store the date; default = "time"
+**dateClassName:** the `class` applied to the element created to store the date; default = "scsplitdatetime-date"
+**timeClassName:** the `class` applied to the element created to store the time; default = "scsplitdatetime-time"
+
+Used like so:
 
 ```javascript
-scSplitDateTime(element, 'text', 'text');
-```
+// Use `type="text"` to avoid native UI components
+options = {
+    dateType: 'text',
+    timeType: 'text'
+}
 
-replaces `element` with two `<input type="text">` elements. The source input element is still expected to contain a datetime value and will still be split into separate date and time values and recombined on form submit.
+scSplitDateTime(element, options);
+```
 
 ### Additional notes
 

@@ -12,13 +12,13 @@
 var scSplitDateTime = (function() {
 
 	// Quick 2-digit number padding function (e.g. 1 -> 01)
-	function pad(n) {
+	var pad = function(n) {
 		return parseInt(n, 10) < 10 ? '0' + n : n.toString();
 	}
 
 	// Function to take a datetime string and return separate date and time
 	// strings as a [date, time] array
-	function splitDateString(dateString) {
+	var splitDateString = function(dateString) {
 		var dt = new Date(dateString);
 		// If we can't parse the datetime, leave blank
 		if(dt == 'Invalid Date') {
@@ -31,7 +31,7 @@ var scSplitDateTime = (function() {
 	}
 
 	// Wrap an element with a new node with the given tag name
-	function wrap(el_, nodeName) {
+	var wrap = function(el_, nodeName) {
 		var wrapper_ = document.createElement(nodeName);
 		el_.parentNode.insertBefore(wrapper_, el_);
 		wrapper_.appendChild(el_);
@@ -39,7 +39,7 @@ var scSplitDateTime = (function() {
 	}
 
 	// Updates the value of a datetime field from date and time fields
-	function update(datetime_, date_, time_) {
+	var update = function(datetime_, date_, time_) {
 		var date = new Date(date_.value),
 			// Date constructor cannot handle a time alone, so give it an
 			//  arbitrary date
@@ -57,7 +57,7 @@ var scSplitDateTime = (function() {
 	}
 
 	// IE-friendly method for changing input type
-	function changeInputType(oldObject, oType) {
+	var changeInputType = function(oldObject, oType) {
 		// Old IE won't let us assign HTML5 input types, so we need to create &
 		// replace, but using innerHTML() so it doesn't notice that we're using
 		// HTML5 types. Sneaky.
@@ -79,6 +79,26 @@ var scSplitDateTime = (function() {
 		return newObject;
 	}
 
+	var baseOptions = {
+		dateType: 'date',
+		timeType: 'time',
+		dateClassName: 'scsplitdatetime-date',
+		timeClassName: 'scsplitdatetime-time'
+	};
+
+	// Resolve options from base & user provided (simple enough case for
+	// shallow merge)
+	var resolveOptions = function(options) {
+	    var mergedOptions = {};
+	    for(var attrname in baseOptions) {
+	    	mergedOptions[attrname] = baseOptions[attrname];
+	    }
+	    for(var attrname in options) {
+	    	mergedOptions[attrname] = options[attrname];
+	    }
+	    return mergedOptions;
+	}
+
 	// Main function to split a datetime field
 	// Params:
 	// - `datetime_`: DOM element to split
@@ -86,9 +106,10 @@ var scSplitDateTime = (function() {
 	//               (string; default: "date")
 	// - `timeType`: type attribute to use for resulting `time` input element
 	//               (string; default: "time")
-	function init(datetime_, dateType, timeType) {
-		dateType = typeof dateType !== 'undefined' ? dateType : 'date';
-		timeType = typeof timeType !== 'undefined' ? timeType : 'time';
+	var init = function(datetime_, options) {
+		// Apply options
+		options = resolveOptions(options);
+
 		// Process:
 		// - Wrap with a <span> to keep it all together
 		// - Add a new date and time fields to replace the datetime field
@@ -98,12 +119,15 @@ var scSplitDateTime = (function() {
 			time_ = datetime_.cloneNode(false);
 
 		container_.className = 'scsplitdatetime';
-		date_ = changeInputType(date_, dateType);
-		time_ = changeInputType(time_, timeType);
+		date_ = changeInputType(date_, options.dateType);
+		time_ = changeInputType(time_, options.timeType);
 
 		// Avoid duplicate IDs
-		date_.id = '';
-		time_.id = '';
+		date_.removeProperty('id');
+		time_.removeProperty('id');
+
+		date_.className = options.dateClassName;
+		time_.className = options.timeClassName;
 
 		// Hiding the datetime field with type=hidden instead of CSS because it
 		// makes semantic sense: this shouldn't be edited by the user
