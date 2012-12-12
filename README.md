@@ -74,7 +74,7 @@ if(!Modernizr.input.datetime) {
 
 ### Options
 
-You can pass an options object in to the `scSplitDateTime()` function for additional configuration.
+You can pass an options object in to the `scSplitDateTime()` constructor for additional configuration.
 
 - **dateType:** the `type` attribute of the element created to store the date; default = "date"
 - **timeType:** the `type` attribute of the element created to store the date; default = "time"
@@ -93,6 +93,12 @@ options = {
 
 // Initialise with options
 scSplitDateTime(element, options);
+```
+
+You can change the default date parser using the `setDefaultParser()` method:
+
+```javascript
+scSplitDateTime.setDefaultParser(myParserFn);
 ```
 
 ### Additional notes
