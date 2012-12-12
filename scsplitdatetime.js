@@ -11,15 +11,27 @@
 // TODO: Consider dynamic validation for time value, based on selected date?
 var scSplitDateTime = (function() {
 
+	var baseOptions = {
+		dateType: 'date',
+		timeType: 'time',
+		dateClassName: 'scsplitdatetime-date',
+		timeClassName: 'scsplitdatetime-time',
+		parser: function(dateString) {
+			return new Date(Date.parse(dateString));
+		}
+	};
+
 	// Quick 2-digit number padding function (e.g. 1 -> 01)
-	var pad = function(n) {
+	function pad(n) {
 		return parseInt(n, 10) < 10 ? '0' + n : n.toString();
 	}
 
 	// Function to take a datetime string and return separate date and time
 	// strings as a [date, time] array
-	var splitDateString = function(dateString) {
-		var dt = new Date(dateString);
+	function splitDateString(dateString, parser) {
+		// Datejs doesn't patch Date constructor, so use Date.parse (which *is*
+		// patched) first - a few extra chars to save Datejs users some pain
+		var dt = parser(dateString);
 		// If we can't parse the datetime, leave blank
 		if(dt == 'Invalid Date') {
 			return ['', ''];
@@ -31,7 +43,7 @@ var scSplitDateTime = (function() {
 	}
 
 	// Wrap an element with a new node with the given tag name
-	var wrap = function(el_, nodeName) {
+	function wrap(el_, nodeName) {
 		var wrapper_ = document.createElement(nodeName);
 		el_.parentNode.insertBefore(wrapper_, el_);
 		wrapper_.appendChild(el_);
@@ -39,7 +51,7 @@ var scSplitDateTime = (function() {
 	}
 
 	// Updates the value of a datetime field from date and time fields
-	var update = function(datetime_, date_, time_) {
+	function update(datetime_, date_, time_) {
 		var date = new Date(date_.value),
 			// Date constructor cannot handle a time alone, so give it an
 			//  arbitrary date
@@ -57,7 +69,7 @@ var scSplitDateTime = (function() {
 	}
 
 	// IE-friendly method for changing input type
-	var changeInputType = function(oldObject, oType) {
+	function changeInputType(oldObject, oType) {
 		// Old IE won't let us assign HTML5 input types, so we need to create &
 		// replace, but using innerHTML() so it doesn't notice that we're using
 		// HTML5 types. Sneaky.
@@ -79,34 +91,25 @@ var scSplitDateTime = (function() {
 		return newObject;
 	}
 
-	var baseOptions = {
-		dateType: 'date',
-		timeType: 'time',
-		dateClassName: 'scsplitdatetime-date',
-		timeClassName: 'scsplitdatetime-time'
-	};
-
 	// Resolve options from base & user provided (simple enough case for
 	// shallow merge)
-	var resolveOptions = function(options) {
-	    var mergedOptions = {};
-	    for(var attrname in baseOptions) {
-	    	mergedOptions[attrname] = baseOptions[attrname];
-	    }
-	    for(var attrname in options) {
-	    	mergedOptions[attrname] = options[attrname];
-	    }
-	    return mergedOptions;
+	function resolveOptions(options) {
+		var mergedOptions = {},
+			attrname = null;
+		for(attrname in baseOptions) {
+			mergedOptions[attrname] = baseOptions[attrname];
+		}
+		for(attrname in options) {
+			mergedOptions[attrname] = options[attrname];
+		}
+		return mergedOptions;
 	}
 
 	// Main function to split a datetime field
 	// Params:
 	// - `datetime_`: DOM element to split
-	// - `dateType`: type attribute to use for resulting `date` input element
-	//               (string; default: "date")
-	// - `timeType`: type attribute to use for resulting `time` input element
-	//               (string; default: "time")
-	var init = function(datetime_, options) {
+	// - `options`: a hash of options to override baseOptions
+	function init(datetime_, options) {
 		// Apply options
 		options = resolveOptions(options);
 
@@ -138,9 +141,9 @@ var scSplitDateTime = (function() {
 		// - new date element should copy the date portion of each of these
 		// - new time element should copy the time portion for its value
 		// - time element shouldn't validate min/max as these depend on the date
-		var valueDateAndTime = splitDateString(datetime_.value);
-		var minDateAndTime = splitDateString(datetime_.min);
-		var maxDateAndTime = splitDateString(datetime_.max);
+		var valueDateAndTime = splitDateString(datetime_.value, options.parser);
+		var minDateAndTime = splitDateString(datetime_.min, options.parser);
+		var maxDateAndTime = splitDateString(datetime_.max, options.parser);
 		date_.value = valueDateAndTime[0];
 		date_.min = minDateAndTime[0];
 		date_.max = maxDateAndTime[0];
@@ -172,6 +175,16 @@ var scSplitDateTime = (function() {
 		container_.appendChild(time_);
 	}
 
-	return init;
+	// Public object; also acts as a constructor
+	var scSplitDateTime = function(element, options) {
+		init(element, options);
+	};
+
+	// Function to allow the default date parser to be replaced
+	scSplitDateTime.setDefaultParser = function(parseFn) {
+		baseOptions.parser = parseFn;
+	};
+
+	return scSplitDateTime;
 
 })();

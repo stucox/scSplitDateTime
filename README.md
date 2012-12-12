@@ -76,10 +76,11 @@ if(!Modernizr.input.datetime) {
 
 You can pass an options object in to the `scSplitDateTime()` function for additional configuration.
 
-- **dateType:** defines the `type` attribute of the element created to store the date; default = "date"
-- **timeType:** defines the `type` attribute of the element created to store the date; default = "time"
-- **dateClassName:** defines the `class` applied to the element created to store the date; default = "scsplitdatetime-date"
-- **timeClassName:** defines the `class` applied to the element created to store the time; default = "scsplitdatetime-time"
+- **dateType:** the `type` attribute of the element created to store the date; default = "date"
+- **timeType:** the `type` attribute of the element created to store the date; default = "time"
+- **dateClassName:** the `class` applied to the element created to store the date; default = "scsplitdatetime-date"
+- **timeClassName:** the `class` applied to the element created to store the time; default = "scsplitdatetime-time"
+- **parser:** a replacement function to use for parsing dates - should take a string as an argument and return a `Date` object; defaults to the native `Date.parse()` method
 
 Used like so:
 
@@ -101,6 +102,20 @@ scSplitDateTime(element, options);
     - The date part of the `min` and `max` datetime values are copied to the date input
     - The time part of the `min` and `max` datetime values are copied to the time input, *if and only if* the min and max dates are the same
 * Date parsing is performed using the JavaScript [Date](https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Date) object and, as such, only supports the date formats which it supports
+* Because of browser differences, it's a good idea to use a date parsing library. [Date.js](http://www.datejs.com/) patches the built-in Date object, so just works if you include it in your page. For other libraries like [Moment.js](http://momentjs.com/), you'll need to specify an appropriate `parser` function option as described above, e.g.:
+
+```javascript
+// Define options with `parser` function which uses Moment.js
+options = {
+    parser: function(dateString) {
+        return moment(dateString).toDate();
+    }
+};
+
+// Initialise with options
+scSplitDateTime(element, options);
+```
+
 * Datetime values are submitted in the format `yyyy-mm-dd HH:MM`
 
 ## Browser support

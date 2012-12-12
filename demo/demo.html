@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<!-- jQuery: required by webshim and livequery -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+	<!-- livequery: used for polyfill pattern -->
 	<script src="https://raw.github.com/brandonaaron/livequery/master/jquery.livequery.js"></script>
+	<!-- Modernizr - required by Webshim -->
 	<script src="modernizr.custom.44992.js"></script>
+	<!-- Webshim - used for polyfill pattern -->
 	<script src="js-webshim/minified/polyfiller.js"></script>
+	<!-- Date.js - improved date parsing -->
+	<script src="date.js"></script>
+	<!-- scSplitDateTime -->
 	<script src="../scsplitdatetime.js"></script>
+	<!-- Fonts & styles -->
 	<link href='http://fonts.googleapis.com/css?family=BenchNine' rel='stylesheet' type='text/css'>
 	<link href='styles.css' rel='stylesheet' type='text/css'>
 	<style>
@@ -60,14 +68,14 @@
 		<input type="submit" value="Submit" />
 	</form>
 
-<script>
-	// Provide form polyfills with webshim
-	$.webshims.polyfill('forms forms-ext');
-	// Apply to all datetime inputs, now and in the future
-	$('input[type=datetime]').livequery(function() {
-		scSplitDateTime(this);
-	});
-</script>
+	<script>
+		// Provide form polyfills with webshim
+		$.webshims.polyfill('forms forms-ext');
+		// Apply to all datetime inputs, now and in the future
+		$('input[type=datetime]').livequery(function() {
+			scSplitDateTime(this);
+		});
+	</script>
 
 </body>
 </html>
